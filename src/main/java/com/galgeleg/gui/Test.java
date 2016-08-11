@@ -56,21 +56,26 @@ public class Test {
 //    }
 
     public static void spil() {
-        HashMap<Integer, Object> map = connector.init();
+        brugteBogstaver = new ArrayList<>();
+        ArrayList<Object> map = connector.init();
         breakdownInitStr(map);
 //        check();
         String gæt = "";
         System.out.println("Ordet er: " + synligtOrd);
-        while(!spilletErTabt || !spilletErVundet) {
+        while(!spilletErTabt && !spilletErVundet) {
             gæt = in.nextLine();
             for(int i = 0; i < gæt.length(); i++) {
-                connector.gætBogstav(gæt.charAt(i) + "", ordet, brugteBogstaver, synligtOrd,
-                    antalForkerteBogstaver, sidsteBogstavVarKorrekt, score);
+                if(!brugteBogstaver.contains(gæt.charAt(i)+"")) {
+                    map = connector.gætBogstav(gæt.charAt(i) + "", ordet,
+                            synligtOrd, antalForkerteBogstaver, sidsteBogstavVarKorrekt, score);
+                    breakdownInitStr(map);
+                    brugteBogstaver.add(gæt.charAt(i)+"");
+                }
             }
-            map = connector.update();
-            breakdownInitStr(map);
+//            map = connector.update();
+//            breakdownInitStr(map);
             System.out.println("Ordet er: " + synligtOrd);
-            System.out.println(brugteBogstaver);
+            System.out.println("Brugte bogstaver: " + brugteBogstaver);
         }
         slutSpil();
     }
@@ -86,19 +91,18 @@ public class Test {
         score = 110;
     }
     
-    public static void breakdownInitStr(HashMap<Integer, Object> map) {
+    public static void breakdownInitStr(ArrayList<Object> map) {
         ordet = (String)map.get(0);
-        brugteBogstaver = (ArrayList)map.get(1);
-        synligtOrd = (String)map.get(2);
-        antalForkerteBogstaver = Integer.parseInt((String)map.get(3));
-        sidsteBogstavVarKorrekt = "true".equals((String)map.get(4));
-        spilletErVundet = "true".equals((String)map.get(5));
-        spilletErTabt = "true".equals((String)map.get(6));
-        score = Integer.parseInt((String)map.get(7));
+        synligtOrd = (String)map.get(1);
+        antalForkerteBogstaver = Integer.parseInt((String)map.get(2));
+        sidsteBogstavVarKorrekt = "true".equals((String)map.get(3));
+        spilletErVundet = "true".equals((String)map.get(4));
+        spilletErTabt = "true".equals((String)map.get(5));
+        score = Integer.parseInt((String)map.get(6));
     }
     
     public static void slutSpil() {
-        if(connector.erSpilletVundet())
+        if(spilletErVundet)
             System.out.println("Du har vundet");
         else System.out.println("Du har tabt");
         System.out.println("spil igen? y/n");

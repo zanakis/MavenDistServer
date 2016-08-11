@@ -102,8 +102,6 @@ public class DBConnector {
      *
      * @param query The SQL command we want to complete is defined by the query
      *
-     * @return The list of games that all have the same columns in the schema	*
-     **************************************************************************
      */
     public ArrayList<String> loadBoardToArray() {
         ArrayList<String> list = new ArrayList<String>();
@@ -114,9 +112,10 @@ public class DBConnector {
                 int position = rs.getInt("position");
                 String playerName = rs.getString("player_id");
                 int points = rs.getInt("points");
-                list.add(String.valueOf(position));
-                list.add(playerName);
-                list.add(String.valueOf(points));
+//                list.add(String.valueOf(position));
+//                list.add(playerName);
+//                list.add(String.valueOf(points));
+                list.add(position + playerName + points);
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -136,66 +135,6 @@ public class DBConnector {
                 + "player_id varchar (255) NOT NULL, "
                 + "points int NOT NULL,"
                 + "PRIMARY KEY (position))");
-        try {
-            doUpdate(query);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * *
-     * Adds player to table when gameBoard is initialized.
-     *
-     * @param gameName Name of the game that is being played.
-     *
-     * @param playerIndex
-     * @param playerName Name of the player being added.
-     * @param balance The balance of the player being added.
-     * @param housesOwned How many houses the player owns.
-     * @param hotelsOwned How many hotels the player owns.
-     * @param prisonCards If the player has any prisoncards.
-     * @param playerPosition Where the player is on the gameBoard.	*
-     **************************************************************
-     */
-    public void addToPlayerTable(String gameName, int playerIndex, String playerName, int balance, int housesOwned, int hotelsOwned, int prisonCards, int playerPosition) {
-        String query = ("INSERT INTO " + gameName + ".player_list(playerName, playerIndex,playerBalance, housesOwned, hotelsOwned, prisonCards, playerPosition)"
-                + "VALUES('" + playerName + "','" + playerIndex + "','" + balance + "','" + housesOwned + "','" + hotelsOwned + "','" + prisonCards + "','" + playerPosition + "');");
-        try {
-            doUpdate(query);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-    }
-    
-    /**
-     * ******************************************************************
-     * Updates the player table whenever there are changes to the table.
-     *
-     *
-     * @param gameName Name of the game that is being played.
-     *
-     * @param playerName Name of the player being added.
-     *
-     * @param balance The balance of the player being added.
-     *
-     * @param housesOwned How many houses the player owns.
-     *
-     * @param hotelsOwned How many hotels the player owns.
-     *
-     * @param prisonCards If the player has any prisoncards.
-     *
-     * @param playerPosition Where the player is on the gameBoard.	*
-     ******************************************************************
-     */
-    public void updatePlayerTable(String gameName, String playerName, int balance, int housesOwned, int hotelsOwned, int prisonCards, int playerPosition) {
-        String query = ("UPDATE " + gameName + ".player_list "
-                + "SET playerBalance='" + balance + "', housesOwned='" + housesOwned + "', hotelsOwned='" + hotelsOwned + "', prisonCards='" + prisonCards + "', playerPosition='" + playerPosition + "' "
-                + "WHERE playerName='" + playerName + "';");
-        
         try {
             doUpdate(query);
         } catch (SQLException e) {
