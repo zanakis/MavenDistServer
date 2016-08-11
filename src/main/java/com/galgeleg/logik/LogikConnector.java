@@ -7,10 +7,6 @@ package com.galgeleg.logik;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author zanakis
- */
 public class LogikConnector {
     static Galgelogik l = new Galgelogik();
     

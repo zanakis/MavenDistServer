@@ -13,10 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-/**
- *
- * @author zanakis
- */
 public class Test {
     
     static Scanner in;
@@ -36,7 +32,11 @@ public class Test {
         connector = new LogikConnector();
         
 //        login();
-        spil();
+//        spil();
+        DBConnector dbc = new DBConnector();
+        dbc.clearLeaderboard();
+//        dbc.addToLeaderBoard(1000, "pls");
+        System.out.println(dbc.loadBoardToArray());
     }
     
 //    public static void spil() {

@@ -24,7 +24,6 @@ import javax.ws.rs.core.MediaType;
 /**
  * REST Web Service
  *
- * @author zanakis
  */
 @Path("/galgeleg")
 @ApplicationPath("/resources")
@@ -98,8 +97,8 @@ public class Galgeleg extends Application {
      * @param content representation for the resource
      */
     @PUT
-    @Path("/setHighscore/{score}")
-    public void putHighscore(String username, @PathParam("score") String score) {
+    @Path("/setHighscore/{username}/{score}")
+    public void putHighscore(@PathParam("username") String username, @PathParam("score") String score) {
         dbc.addToLeaderBoard(Integer.parseInt(score), username);
     }
 }

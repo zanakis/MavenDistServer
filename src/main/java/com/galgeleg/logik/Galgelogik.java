@@ -104,6 +104,12 @@ public class Galgelogik {
     muligeOrd.add("gangsti");
     muligeOrd.add("skovsnegl");
     muligeOrd.add("solsort");
+    try {
+        hentOrdFraDr();
+    } catch(Exception e) {
+        e.printStackTrace();
+        System.out.println("Kan ikke hente ord fra DR");
+    }
     nulstil();
   }
 

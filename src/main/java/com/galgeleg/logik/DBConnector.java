@@ -28,6 +28,7 @@ public class DBConnector {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://" + HOST + ":" + PORT;
             connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+            createGameDB();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.exit(1);
@@ -36,6 +37,11 @@ public class DBConnector {
     
     public Connection getConnection() {
         return connection;
+    }
+    
+    public void doExecute(String query) throws SQLException {
+        Statement stmt = connection.createStatement();
+        stmt.execute(query);
     }
     
     /**
@@ -107,15 +113,13 @@ public class DBConnector {
         ArrayList<String> list = new ArrayList<String>();
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT position, player_id, points FROM leaderboard;");
+            ResultSet rs = stmt.executeQuery("SELECT player_id, points FROM leaderboard ORDER BY points DESC;");
             while (rs.next()) {
-                int position = rs.getInt("position");
                 String playerName = rs.getString("player_id");
                 int points = rs.getInt("points");
-//                list.add(String.valueOf(position));
 //                list.add(playerName);
 //                list.add(String.valueOf(points));
-                list.add(position + playerName + points);
+                list.add(playerName + "\t" + points);
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -131,10 +135,9 @@ public class DBConnector {
      */
     public void createLeaderboard() {
         String query = ("CREATE TABLE IF NOT EXISTS leaderboard"
-                + "(position int NOT NULL AUTO_INCREMENT,"
-                + "player_id varchar (255) NOT NULL, "
+                + "(player_id varchar (255) NOT NULL, "
                 + "points int NOT NULL,"
-                + "PRIMARY KEY (position))");
+                + "PRIMARY KEY (player_id))");
         try {
             doUpdate(query);
         } catch (SQLException e) {
@@ -158,16 +161,19 @@ public class DBConnector {
      **********************************************************
      */
     public void addToLeaderBoard(int points, String playerId) {
+        
         String query = ("INSERT INTO leaderboard(points, player_id)"
                 + "VALUES('" + points + "', '" + playerId + "');");
+        String q2 = ("SELECT * FROM leaderboard "
+                + "ORDER BY points;");
         
         try {
             doUpdate(query);
+            doExecute(q2);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
     
     /**
